@@ -1,0 +1,20 @@
+from machine import ADC, Pin
+import utime
+
+moisture_sensor = ADC(27)
+relaypin = Pin(13, mode = Pin.OUT)
+relaypin.value(0)
+
+while True:
+    reading=moisture_sensor.read_u16()
+    voltage = 3.3*reading/65535
+    print(voltage)
+    utime.sleep(2)
+    if voltage > 2.8:
+        print(voltage)
+        print("Plant Needs Water!!!")
+        relaypin.value(0)
+    else:
+        print(voltage)
+        print("Plant has enough water")
+        relaypin.value(1)
